@@ -1,0 +1,97 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        {% load static %}
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>
+            {% block titulo %}
+
+            {% endblock titulo %}
+        </title>
+        <link rel="icon" type="image/x-icon" href="{% static 'App_CS/assets/sc_Logo.png' %}" />
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
+        <link href='{% static "App_CS/css/styles.css" %}' rel="stylesheet" />
+        
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-lT97kAP5RiEOrr8exATUXNKuzxncUjPjgRmx5vB9c8xt5jldKOWDXHxkWhCKut91Edc0u25WyFzIzAKbU8n9Iw==" crossorigin="anonymous" />
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" integrity="sha512-m7J1dR0RJ9eWdRdK0+Hc9aK8N7Q6a9sLhLwB4Lgq2sEtXlCZ3J1vGgT6x6SsE5RnDqVxJ8j8ZKZa9rYlZI0XjQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.3/umd/popper.min.js" integrity="sha512-4k3JQ0Z0T4J6W8l0IJMMe4lnz9G9hMf8WpU+3bDZl2kNQ2k+ZzWV5UQ3Z6fZbP6L5UJzWfRi8xu8R6X+4/6WQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js" integrity="sha512-fv6eGz1G8t2yV3Q8VqjvJ1zj7s9ZJXvQqoYtM/3zRZ6P2MaHJ9m6vL+K8G9yWc3F5Qf2i8vYbqfHt/5R4HauOQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src='{% static "App_CS/js/scripts.js" %}'></script>
+    </head>
+
+    <header > 
+        <div class="container">        
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-lT97kAP5RiEOrr8exATUXNKuzxncUjPjgRmx5vB9c8xt5jldKOWDXHxkWhCKut91Edc0u25WyFzIzAKbU8n9Iw==" crossorigin="anonymous" />
+    </header>
+
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+            <div class="container">
+                <a href="/">
+                    <img width="50px"; height="50px" src='{% static "App_CS/assets/img/sc_Logo.png" %}' alt=""/>
+                </a>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav navbar-brand navbar-nav-scroll text-uppercase ms-auto py-4 py-lg-0">
+                        <li class="nav-item"><a class="nav-link" href="/shows">Shows</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/rodeos">Rodeos</a></li>
+                        {% if user.is_authenticated %}
+                            <li class="nav-item"><a class="nav-link" href="/tickets">TICKETS</a></li>
+                            <li class="nav-item" style="display: flex;">
+                                <img width="30px" src="{{ user.avatar.imagen.url }}" alt="">
+                                <a href="/perfil_editar" class="nav-link" style="color: #ffc800; transition: opacity 0.3s;" onmouseover="this.style.opacity=0.7;" onmouseout="this.style.opacity=1;">
+                                    hola {{ user.first_name }} !
+                                </a>
+                            </li>
+                                <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+                                {% else %}
+                                <li class="nav-item"><a class="nav-link" href="/login" >
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" class="bi bi-person-fill" viewBox="0 0 20px 20px">
+                                        <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+                                    </svg>
+                                    Login</a>
+                                </li>
+                        {% endif %}
+                        <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        {% block header %}
+            <header class="masthead">
+                <div class="container">
+                    <div class="masthead-subheading"></div>
+                    <br><br>
+                </div>
+            </header>
+        {% endblock header %}
+        
+        {% block body %}
+            
+        {% endblock body %}
+        
+        <footer class="footer py-4">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-4 text-lg-start">Copyright &copy; Your Website 2023</div>
+                    <div class="col-lg-4 my-3 my-lg-0"></div>
+                    <div class="col-lg-4 text-lg-end">
+                        <a class="link-dark text-decoration-none me-3" href="#!">Privacy Policy</a>
+                        <a class="link-dark text-decoration-none" href="#!">Terms of Use</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        
+        <script src='{% static "App_CS/js/scripts.js" %}'></script>
+   </body>
+</html>

@@ -1,0 +1,47 @@
+{% extends 'App_CS/base.html' %}
+
+{% load static %}
+
+{% block titulo %}
+  Calgary Stampede
+{% endblock titulo %}
+
+
+{% block body %}
+  <div style="background-color: black;">
+    <section id="portfolio">
+      <div class="card card--align-center-no-pane card--overlay" style="background-color:black;">
+        <div class="portfolio-item">
+          <img width="700px"; height="500px"class="img-fluid" src='{% static "App_CS/assets/img/portfolio/Rodeo Steer.jpg" %}' alt="..." ></img>
+          <div class="portfolio-caption" style="background-color:black;">
+            <h2 style="color: aliceblue;">RODEOS</h2>
+            <h6 class="portfolio-caption-heading" style="display: flex; align-items: center; color: aliceblue; justify-content: center; height: 70%;">
+              El calibre de un rodeo se reduce a dos cosas: la habilidad de los competidores y la calidad de los caballos, toros y novillos. El Stampede Rodeo presenta a los mejores competidores y animales del mundo. Todas las tardes a la 1:30 p. m., vaqueros y vaqueras se enfrentan en una furiosa demostración de habilidad y valor, y cada victoria se acerca al Showdown Sunday, en el rodeo al aire libre más grande del mundo.
+            </h6>
+            <button class="btn btn-primary" style="font-family: Ziggurat; font-weight: 700">
+              <a href="/rodeos/" style="display: flex; align-items: center; color: aliceblue";>Ver mas...</a>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div><br><br></div>
+      <div class="card card--align-center-no-pane card--overlay" style="background-color:black;">
+        <div class="portfolio-item">
+          <img width="700px"; height="500px"class="img-fluid" src='{% static "App_CS/assets/img/portfolio/Evening show_2022.jpg" %}' alt="..." ></img>
+          <div class="portfolio-caption" style="background-color:black;">
+            <h2 style="color: aliceblue;">CALGARY STAMPEDE EVENING SHOW</h2>
+            <h6 class="portfolio-caption-heading" style="display: flex; align-items: center; color: aliceblue; justify-content: center; height: 70%;">
+              El espectáculo nocturno Calgary Stampede se lleva a cabo todas las noches a las 7:45 p.m.
+              Música, acrobacias espectaculares y pirotecnia alucinante cuando baja el sol. <br> <br>
+              El Bell Grandstand Show sube al escenario para deslumbrar al público con elaboradas actuaciones de canciones, bailes y música en vivo. <br> <br>
+            </h6>
+            <button class="btn btn-primary" style="font-family: Ziggurat; font-weight: 700">
+              <a href="/shows/" style="display: flex; align-items: center; color: aliceblue";>Ver mas...</a>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div><br><br></div>
+    </section>
+  </div>
+{% endblock body %}

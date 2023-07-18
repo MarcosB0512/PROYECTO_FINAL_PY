@@ -1,0 +1,47 @@
+{% extends 'App_CS/shows.html' %}
+
+{% load static %}
+
+{% block titulo %}
+    Editar {{titulo}}
+{% endblock titulo %}
+
+{% block header %} 
+  <div class="show"><br><br>
+    <a class="masthead-subheading" style="font-size: 50px; font-family: 'Belanosima-SemiBold'; color:rgb(245, 237, 13)">Editar {{titulo}}</a>
+  </div>
+{% endblock header %}
+
+{% block body %}
+    <br>
+    <form class="container" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+
+        <p>Titulo:</p>
+        <input type="text" name="titulo" value="{{ titulo }}"></input><br><br>
+
+        <p>Descripcion:</p>
+        <textarea type="text" name="descripcion", rows="2" cols="60" >{{ descripcion }}</textarea><br><br>
+        
+        <p>Texto:</p>
+        <textarea type="text" name="texto", rows="4" cols="100" >{{ texto }}</textarea><br><br>
+        
+
+        {% if imagen_actual %}
+          <p>Imagen actual: {{ imagen_actual.imagen.name }}</p>
+          <img width="200px" height="200px"src="{{ imagen_actual.imagen.url }}" alt="Imagen actual en miniatura">
+        {% endif %}
+        <br>
+        
+        <input type="file" name="imagen"><br><br>
+
+        
+        <button type="submit" class="btn btn-primary" style="background-color: green; border-color: green;" 
+        onmouseover="this.style.backgroundColor='blue';" 
+        onmouseout="this.style.backgroundColor='green';">Actualizar</button>        
+
+        <br>
+        <a href="{% url 'Rodeo' %}">Regresar sin Guardar..</a>
+    </form>
+{% endblock body %}

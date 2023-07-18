@@ -1,0 +1,31 @@
+{% extends 'App_CS/base.html' %}
+
+{% load static %}
+
+{% block titulo %}
+    Loguin
+{% endblock titulo %}
+
+{% block head %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/css/bootstrap.min.css" integrity="sha512-m7J1dR0RJ9eWdRdK0+Hc9aK8N7Q6a9sLhLwB4Lgq2sEtXlCZ3J1vGgT6x6SsE5RnDqVxJ8j8ZKZa9rYlZI0XjQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.3/umd/popper.min.js" integrity="sha512-4k3JQ0Z0T4J6W8l0IJMMe4lnz9G9hMf8WpU+3bDZl2kNQ2k+ZzWV5UQ3Z6fZbP6L5UJzWfRi8xu8R6X+4/6WQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js" integrity="sha512-fv6eGz1G8t2yV3Q8VqjvJ1zj7s9ZJXvQqoYtM/3zRZ6P2MaHJ9m6vL+K8G9yWc3F5Qf2i8vYbqfHt/5R4HauOQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src='{% static "App_CS/js/scripts.js" %}'></script>
+    <link href='{% static "App_CS/css/styles.css" %}' rel="stylesheet" ></link>
+{% endblock head %}
+
+{% block body %}
+    <br>
+    <form class="container" action="{% url 'Perfil_Editar' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <table>
+            {{ formulario.as_p }}
+            {{ avatarForm.as_p }}
+            <a href="{% url 'Perfil_Editar' %}">Cambiar Contraseña</a><br>
+            <a class="navbar-brand" href="/"><button type="submit" >Actualizar</button></a>
+        </table>       
+        <br><br>
+    </form>   
+
+{% endblock body %}

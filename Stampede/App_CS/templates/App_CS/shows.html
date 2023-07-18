@@ -1,0 +1,161 @@
+{% extends 'App_CS/base.html' %}
+
+{% load static %}
+
+{% block titulo %}
+    SHOW
+{% endblock titulo %}
+
+{% block head %}
+
+{% endblock head %}
+
+
+{% block header %}
+  {% if user.is_authenticated %}
+    <div class="show" style="padding-bottom: 1.00rem"><Br></Br>
+      <div class="masthead-subheading" style="font-size: 50px; font-family: 'Belanosima-SemiBold'">CALGARY STAMPEDE SHOWS</div>
+      <button onclick="abrirModal('modalCrear')" class="btn btn-primary" >Crear SHOW</button>      
+    </div>
+
+      <!-- Modal de Crear Show -->
+    <div id="modalCrear" class="modalcontent" aria-hidden="true">
+      <form class="container" action="{% url 'Create_Show' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="modalcontent-dialog">
+          <div class="modalcontent-header">
+            <div><h2>Crear Show</h2></div>
+            <div><a onclick="cerrarModal('modalCrear')" class="btn-close closemodale" aria-hidden="true"></a></div>
+          </div>
+          <div class="modalcontent-body">
+
+            <p>Titulo: <input type="text" name="titulo" ></input>
+            <p>Descripcion: <textarea type="text" name="descripcion", rows="4" cols="40"></textarea></p>
+            <p>Texto: <textarea type="text" name="texto", rows="4" cols="40" ></textarea></p>
+            <p>Imagen: <input type="file" name="imagen" ></p>
+
+            <button type="submit" class="btn btn-primary" style="background-color: green; border-color: green;" 
+              onmouseover="this.style.backgroundColor='blue';" 
+              onmouseout="this.style.backgroundColor='green';">Crear Show
+            </button>
+            <br>
+          </div>
+          <br>
+          <a onclick= "cerrarModal('modalCrear')" href="#" class="btn btn-primary" id="btn_ingresar">Volver Sin Guardar..</a>
+          <br><br>
+        </div>
+      </form> 
+    </div> 
+
+  {% endif %}
+
+  {% if not user.is_authenticated %}
+    <div class="show"><br><br>
+      <div class="masthead-subheading" style="font-size: 50px; font-family: 'Belanosima-SemiBold'">CALGARY STAMPEDE SHOW</div>
+    </div>
+  {% endif %}
+{% endblock header %}
+
+
+{% block body %}
+  {% if object_list %}
+    {% for show in object_list %}
+      <section id="portfolio" class="card card--align-center-no-pane card--overlay" style="background-color:black;">
+        <div class="portfolio-item">
+
+          {% for imagen_show in imagen_shows %}
+            {% if imagen_show.show == show %}
+              <img width="400px" height="300px" class="img-fluidrodeo" src="{{ imagen_show.imagen.url }}" alt="">
+            {% endif %}
+          {% endfor %}
+          
+          <div class="portfolio-caption" style="background-color:black;">                
+            <h2 style="color: aliceblue;">{{show.titulo}}</h2>
+            <br>
+            <h6 class="portfolio-caption-heading" style="display: flex; align-items: center; font-style: italic; color: aliceblue; justify-content: center;">
+              {{show.descripcion|linebreaksbr}}
+            </h6>
+            <br>
+            <br><br>          
+            <button class="btn btn-primary" onclick="window.location.href='{% url 'Show_Ver' show.id %}'">Ver Detalle</button>
+            {% if user.is_authenticated %}
+
+              <button class="btn btn-primary" onclick="window.location.href='{% url 'Show_Update' show.id %}'">Editar</button>
+
+              <button class="btn btn-primary" ><a onclick="abrirModal('modalBorrar{{ show.id }}')">Eliminar</a></button>
+            
+            {% endif %}
+          </div>
+        </div>
+      </section>
+    {% endfor %}
+  {% else %}
+    <div >
+      <br><br>
+      {% if not user.is_authenticated %}
+        <h2>Todavía no hay ningún post creado. Para crear uno, debes iniciar sesión.</h2>
+      {% endif %}
+    </div>
+    <div >
+      <br><br>
+      {% if user.is_authenticated %}
+        <h2>Todavía no hay ningún post creado. <br> Puedes crear uno haciendo click <a href="#" onclick="abrirModal('modalCrear');" style="display: flex; align-items: center; color: rgb(0, 0, 0);">aqui...</a></h2>      
+      {% endif %}
+    </div> 
+  {% endif %}
+  
+  {% for show in object_list %}
+    <!-- Modal de Borrar -->
+    <div id="modalBorrar{{ show.id }}" class="modalcontent" aria-hidden="true">
+      <form class="container" action="{% url 'Show_Delete' show.id %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="modalcontent-dialog">
+          <div class="modalcontent-header">
+            <div><h2>Eliminar Show</h2></div>
+            <div><a onclick="cerrarModal('modalBorrar{{ show.id }}')" class="btn-close closemodale" aria-hidden="true"></a></div>
+          </div>
+          <h2>¿Queres eliminar este post ?<br></h2>
+          <div class="modalcontent-body">
+            {% csrf_token %}                        
+            <!-- <h3>Titulo:</h2> -->
+            <h3 type="text" name="titulo" >{{ show.titulo }}</h3><br>
+            
+            <!-- <h3>Descripcion:</h3> -->
+            <h5 class="textoRecortado" type="text" >{{ show.descripcion }}</h5>
+            <textarea class= 'textoCompleto' style="display: none;" type="text" name="descripcion", rows="2" cols="60" >{{ show.descripcion }}</textarea><br>
+            
+            <!-- <h3>Imagen actual: </h3> -->
+            {% for imagen_show in imagen_shows %}
+              {% if imagen_show.show == show %}
+                <img width="400px" height="300px" class="img-fluidrodeo" src="{{ imagen_show.imagen.url }}" alt="">
+              {% endif %}
+            {% endfor %}
+            
+            <br><br>
+          </div>
+          <br>
+          <a onclick= "cerrarModal('modalBorrar{{ show.id }}')" href="#" class="btn btn-primary" id="btn_ingresar">Cancelar..</a>
+          <button type="submit" class="btn btn-primary" style="background-color: green; border-color: green;" 
+            onmouseover="this.style.backgroundColor='blue';" 
+            onmouseout="this.style.backgroundColor='green';">Eliminar Show
+          </button>
+          
+          <br><br>
+        </div>
+      </form>
+    </div>     
+
+    <script>
+      var textosCompleto = document.getElementsByClassName("textoCompleto");
+      var textosRecortado = document.getElementsByClassName("textoRecortado");
+    
+      for (var i = 0; i < textosCompleto.length; i++) {
+        var textoCompleto = textosCompleto[i].value;
+        var textoRecortado = textoCompleto.slice(0, 80) + "...";
+        textosRecortado[i].innerText = textoRecortado;
+      }
+    </script>
+
+  {% endfor %}
+
+{% endblock body %}

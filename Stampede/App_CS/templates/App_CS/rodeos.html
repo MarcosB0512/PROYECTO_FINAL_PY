@@ -1,0 +1,151 @@
+{% extends 'App_CS/base.html' %}
+
+{% load static %}
+
+{% block titulo %}
+    RODEO
+{% endblock titulo %}
+
+{% block head %}
+
+{% endblock head %}
+
+
+{% block header %}
+  {% if user.is_authenticated %}
+    <div class="rodeo" style="padding-bottom: 1.00rem"><Br></Br>
+      <div class="masthead-subheading" style="font-size: 50px; font-family: 'Belanosima-SemiBold'">CALGARY STAMPEDE RODEO</div>
+      <button onclick="abrirModal('modalCrear')" class="btn btn-primary" >Crear Rodeo</button>      
+    </div>
+    {% for rodeo in object_list %}
+      <!-- Modal de Crear Rodeo -->
+      <div id="modalCrear" class="modalcontent" aria-hidden="true">
+        <form class="container" action="{% url 'Create' %}" method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+            <div class="modalcontent-dialog">
+              <div class="modalcontent-header">
+                <div><h2>Crear Rodeo</h2></div>
+                <div><a onclick="cerrarModal('modalCrear')" class="btn-close closemodale" aria-hidden="true"></a></div>
+              </div>
+              <div class="modalcontent-body">
+
+                <p>Titulo: <input type="text" name="titulo" ></input>
+                <p>Descripcion: <textarea type="text" name="descripcion", rows="4" cols="40"></textarea></p>
+                <p>Texto: <textarea type="text" name="texto", rows="4" cols="40" ></textarea></p>
+                <p>Imagen: <input type="file" name="imagen" ></p>
+
+                <button type="submit" class="btn btn-primary" style="background-color: green; border-color: green;" 
+                  onmouseover="this.style.backgroundColor='blue';" 
+                  onmouseout="this.style.backgroundColor='green';">Crear Rodeo</button>
+                <br>
+              </div>
+              <br>
+              <a onclick= "cerrarModal('modalCrear')" href="#" class="btn btn-primary" id="btn_ingresar">Volver Sin Guardar..</a>
+              <br><br>
+            </div>
+        </form> 
+      </div> 
+    {% endfor %} 
+  {% endif %}
+
+  {% if not user.is_authenticated %}
+    <div class="rodeo"><br><br>
+      <div class="masthead-subheading" style="font-size: 50px; font-family: 'Belanosima-SemiBold'">CALGARY STAMPEDE RODEO</div>
+    </div>
+  {% endif %}
+{% endblock header %}
+
+
+{% block body %}
+  {% if object_list %}
+    {% for rodeo in object_list %}
+      <section id="portfolio" class="card card--align-center-no-pane card--overlay" style="background-color:black;">
+        <div class="portfolio-item">
+          <img width="400px" height="300px" class="img-fluidrodeo" src="{{ rodeo.imagen.imagen.url }}" alt="">
+          <div class="portfolio-caption" style="background-color:black;">                
+            <h2 style="color: aliceblue;">{{rodeo.titulo}}</h2>
+            <br>
+            <h6 class="portfolio-caption-heading" style="display: flex; align-items: center; font-style: italic; color: aliceblue; justify-content: center;">
+              {{rodeo.descripcion|linebreaksbr}}
+            </h6>
+            <br>
+            <br><br>          
+            <button class="btn btn-primary" onclick="window.location.href='{% url 'Rodeo_Ver' rodeo.id %}'">Ver Detalle</button>
+            {% if user.is_authenticated %}
+            
+              <button class="btn btn-primary" onclick="window.location.href='{% url 'Rodeo_Update' rodeo.id %}'">Editar</button>
+              
+              <button class="btn btn-primary" ><a onclick="abrirModal('modalBorrar{{ rodeo.id }}')">Eliminar</a></button>
+              
+            {% endif %}
+          </div>
+        </div>
+      </section>
+    {% endfor %}
+  {% else %}
+    <div >
+      <br><br>
+      {% if not user.is_authenticated %}
+        <p>Todavía no hay ningún post creado. Para crear uno, debes iniciar sesión.</p>
+      {% endif %}
+    </div>
+    <div >
+      <br><br>
+      {% if user.is_authenticated %}
+        <p>Todavía no hay ningún post creado. <br> Puedes crear una haciendo click <a href="#" onclick="abrirModal('modalCrear');" style="display: flex; align-items: center; color: rgb(0, 0, 0);">aqui...</a></p>      
+      {% endif %}
+    </div> 
+  {% endif %}
+  
+  
+  
+  {% for rodeo in object_list %}
+    <!-- Modal de Borrar -->
+    <div id="modalBorrar{{ rodeo.id }}" class="modalcontent" aria-hidden="true">
+      <form class="container" action="{% url 'Rodeo_Delete' rodeo.id %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="modalcontent-dialog">
+          <div class="modalcontent-header">
+            <div><h2>Eliminar Rodeo</h2></div>
+            <div><a onclick="cerrarModal('modalBorrar{{ rodeo.id }}')" class="btn-close closemodale" aria-hidden="true"></a></div>
+          </div>
+          <h2>¿Queres eliminar este post ?<br></h2>
+          <div class="modalcontent-body">
+            {% csrf_token %}                        
+            <!-- <h3>Titulo:</h2> -->
+            <h3 type="text" name="titulo" >{{ rodeo.titulo }}</h3><br>
+            
+            <!-- <h3>Descripcion:</h3> -->
+            <h5 class="textoRecortado" type="text" >{{ rodeo.descripcion }}</h5>
+            <textarea class= 'textoCompleto' style="display: none;" type="text" name="descripcion", rows="2" cols="60" >{{ rodeo.descripcion }}</textarea><br>
+            
+            <!-- <h3>Imagen actual: </h3> -->
+            <img width="300px" height="200px" class="img-fluidrodeo" src="{{ rodeo.imagen.imagen.url }}" alt="">
+            <br><br>
+          </div>
+          <br>
+          <a onclick= "cerrarModal('modalBorrar{{ rodeo.id }}')" href="#" class="btn btn-primary" id="btn_ingresar">Cancelar..</a>
+          <button type="submit" class="btn btn-primary" style="background-color: green; border-color: green;" 
+            onmouseover="this.style.backgroundColor='blue';" 
+            onmouseout="this.style.backgroundColor='green';">Eliminar Rodeo
+          </button>
+          
+          <br><br>
+        </div>
+      </form>
+    </div>     
+      
+    <script>
+      var textosCompleto = document.getElementsByClassName("textoCompleto");
+      var textosRecortado = document.getElementsByClassName("textoRecortado");
+    
+      for (var i = 0; i < textosCompleto.length; i++) {
+        var textoCompleto = textosCompleto[i].value;
+        var textoRecortado = textoCompleto.slice(0, 80) + "...";
+        textosRecortado[i].innerText = textoRecortado;
+      }
+    </script>
+
+  {% endfor %}
+
+{% endblock body %}
